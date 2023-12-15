@@ -1,4 +1,4 @@
-﻿namespace WorkoutNest;
+﻿namespace WorkoutNest.API.Models;
 
 public class Registration
 {

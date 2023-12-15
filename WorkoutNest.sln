@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutNest", "WorkoutNest\WorkoutNest.csproj", "{D618FFCE-5FE6-4832-9782-8EBE6EC80302}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutNest.API", "src\WorkoutNest.API\WorkoutNest.API.csproj", "{EDF076FC-77BA-4A90-873B-859A12910C3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D618FFCE-5FE6-4832-9782-8EBE6EC80302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D618FFCE-5FE6-4832-9782-8EBE6EC80302}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D618FFCE-5FE6-4832-9782-8EBE6EC80302}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D618FFCE-5FE6-4832-9782-8EBE6EC80302}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDF076FC-77BA-4A90-873B-859A12910C3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDF076FC-77BA-4A90-873B-859A12910C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDF076FC-77BA-4A90-873B-859A12910C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDF076FC-77BA-4A90-873B-859A12910C3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
