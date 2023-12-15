@@ -17,7 +17,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.MapGet("/", () => new OkResult());
+app.MapGet("/", () => "Hello World!");
 app.MapPost("auth/register", (Registration newUser) => { return newUser; });
 
 app.UseCors(x => x
