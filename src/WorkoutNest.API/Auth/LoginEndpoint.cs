@@ -1,4 +1,8 @@
+using System.Security.Authentication;
 using FastEndpoints;
+using MongoDB.Driver;
+using WorkoutNest.Infrastructure.Mongo;
+using WorkoutNest.Infrastructure.Mongo.Entities;
 
 namespace WorkoutNest.API.Auth;
 
@@ -19,7 +23,20 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
     public override async Task HandleAsync(LoginRequest r, CancellationToken c)
     {
 
-        await SendAsync(new() { }, cancellation: c);
+        var client = new MongoClient(mongoDbConnectionString);
+        var db = client.GetDatabase("workoutnest");
+        var users = db.GetCollection<User>(Collections.UsersCollection);
+
+        var user = await (await users.FindAsync(x => x.Username == r.Username && x.Password == r.Password))
+            .SingleOrDefaultAsync(cancellationToken: c);
+
+        if (user == null)
+        {
+            throw new AuthenticationException("Please provide correct username nad password.");
+        }
+        
+        
+        await SendAsync(new() { } , cancellation: c);
     }
 }
 

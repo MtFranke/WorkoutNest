@@ -1,4 +1,4 @@
-namespace WorkoutNest.Infrastructure.Mongo.Collections;
+namespace WorkoutNest.Infrastructure.Mongo.Entities;
 
 public class User
 {

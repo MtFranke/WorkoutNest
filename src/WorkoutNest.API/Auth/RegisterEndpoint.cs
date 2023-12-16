@@ -1,6 +1,7 @@
 using FastEndpoints;
 using MongoDB.Driver;
-using WorkoutNest.Infrastructure.Mongo.Collections;
+using WorkoutNest.Infrastructure.Mongo;
+using WorkoutNest.Infrastructure.Mongo.Entities;
 
 namespace WorkoutNest.API.Auth;
 
@@ -23,7 +24,7 @@ public class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
         var id = Guid.NewGuid();
         var client = new MongoClient(mongoDbConnectionString);
         var db = client.GetDatabase("workoutnest");
-        var users = db.GetCollection<User>("users");
+        var users = db.GetCollection<User>(Collections.UsersCollection);
         users.InsertOne(new User()
         {
             Id = id.ToString(),
