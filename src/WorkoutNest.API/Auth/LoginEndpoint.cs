@@ -27,7 +27,7 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
         var db = client.GetDatabase("workoutnest");
         var users = db.GetCollection<User>(Collections.UsersCollection);
 
-        var user = await (await users.FindAsync(x => x.Username == r.Username && x.Password == r.Password))
+        var user = await (await users.FindAsync(x => x.Username == r.Username && x.Password == r.Password, cancellationToken: c))
             .SingleOrDefaultAsync(cancellationToken: c);
 
         if (user == null)
