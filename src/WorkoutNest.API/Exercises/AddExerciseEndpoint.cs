@@ -6,7 +6,7 @@ using WorkoutNest.Infrastructure.Mongo.Entities;
 
 namespace WorkoutNest.API.Exercises;
 
-public class AddExerciseEndpoint: Endpoint<ExerciseRequest, OkResult>
+public class AddExerciseEndpoint: Endpoint<ExerciseRequest, ExerciseResponse>
 {
     private string mongoDbConnectionString;
 
@@ -17,7 +17,7 @@ public class AddExerciseEndpoint: Endpoint<ExerciseRequest, OkResult>
     
     public override void Configure()
     {
-        Post("/exercises/add");
+        Post("/exercises");
         AllowAnonymous();
     }
 
@@ -26,10 +26,11 @@ public class AddExerciseEndpoint: Endpoint<ExerciseRequest, OkResult>
         var client = new MongoClient(mongoDbConnectionString);
         var db = client.GetDatabase("workoutnest");
         var exercises = db.GetCollection<Exercise>(Collections.ExercisesCollection);
-        var exercise = new Exercise(Guid.NewGuid().ToString(), r.Name, r.PrimaryMuscelGroup, r.OtherMuscelGroup,
+        var id = Guid.NewGuid().ToString();
+        var exercise = new Exercise(id, r.Name, r.PrimaryMuscelGroup, r.OtherMuscelGroup,
             r.Equipment);
         await exercises.InsertOneAsync(exercise, c);
-        await SendAsync(new() { } , cancellation: c);
+        await SendAsync(new ExerciseResponse() {Id =id} , cancellation: c);
 
     }
 
@@ -41,4 +42,9 @@ public class ExerciseRequest
     public string PrimaryMuscelGroup { get; set; }
     public string OtherMuscelGroup { get; set; }
     public string Equipment { get; set; }
+}
+
+public class ExerciseResponse
+{
+    public string Id { get; set; }
 }
