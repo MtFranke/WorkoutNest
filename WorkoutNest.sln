@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutNest.API", "src\Work
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutNest.Infrastructure", "src\WorkoutNest.Infrastructure\WorkoutNest.Infrastructure.csproj", "{0FD7DC7C-7CEA-4396-81BA-2073F973D9FF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{66BE9DFA-2203-437F-9DD4-2EEEFF1ADB19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{0FD7DC7C-7CEA-4396-81BA-2073F973D9FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FD7DC7C-7CEA-4396-81BA-2073F973D9FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FD7DC7C-7CEA-4396-81BA-2073F973D9FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EDF076FC-77BA-4A90-873B-859A12910C3A} = {66BE9DFA-2203-437F-9DD4-2EEEFF1ADB19}
+		{0FD7DC7C-7CEA-4396-81BA-2073F973D9FF} = {66BE9DFA-2203-437F-9DD4-2EEEFF1ADB19}
 	EndGlobalSection
 EndGlobal

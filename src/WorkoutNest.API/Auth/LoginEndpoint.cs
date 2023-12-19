@@ -1,5 +1,7 @@
 using System.Security.Authentication;
+using System.Security.Claims;
 using FastEndpoints;
+using IdentityModel.Client;
 using MongoDB.Driver;
 using WorkoutNest.Infrastructure.Mongo;
 using WorkoutNest.Infrastructure.Mongo.Entities;
@@ -8,11 +10,15 @@ namespace WorkoutNest.API.Auth;
 
 public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
 {
-    private string mongoDbConnectionString;
+    private readonly IJwtToken _jwtToken;
+    private readonly string _mongoDbConnectionString;
+    private readonly string _mongoDb;
 
-    public LoginEndpoint(IConfiguration configuration)
+    public LoginEndpoint(IConfiguration configuration, IJwtToken jwtToken)
     {
-        mongoDbConnectionString = configuration["MongoDbConnectionString"];
+        _jwtToken = jwtToken;
+        _mongoDbConnectionString = configuration["MongoDbConnectionString"];
+        _mongoDb = configuration["MongoDb"];
     }
     public override void Configure()
     {
@@ -23,20 +29,21 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
     public override async Task HandleAsync(LoginRequest r, CancellationToken c)
     {
 
-        var client = new MongoClient(mongoDbConnectionString);
-        var db = client.GetDatabase("workoutnest");
+        var client = new MongoClient(_mongoDbConnectionString);
+        var db = client.GetDatabase(_mongoDb);
         var users = db.GetCollection<User>(Collections.UsersCollection);
-
+        
         var user = await (await users.FindAsync(x => x.Username == r.Username && x.Password == r.Password, cancellationToken: c))
             .SingleOrDefaultAsync(cancellationToken: c);
-
+        
         if (user == null)
         {
             throw new AuthenticationException("Please provide correct username nad password.");
         }
+
+        var tokenG = _jwtToken.GenerateToken(Guid.NewGuid().ToString(), new []{new Claim("user_id", user.Id)});
         
-        
-        await SendAsync(new() { } , cancellation: c);
+        await SendAsync(new() {AccessToken = tokenG} , cancellation: c);
     }
 }
 
@@ -48,5 +55,6 @@ public class LoginRequest
 }
 
 public class LoginResponse{
-    
+    public string AccessToken {get; set; }
+
 }
