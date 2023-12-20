@@ -34,7 +34,6 @@ builder.Services.AddAuthentication("Bearer")
         };
         
     });
-
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
