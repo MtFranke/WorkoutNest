@@ -8,7 +8,7 @@ using WorkoutNest.Infrastructure.Mongo.Entities;
 
 namespace WorkoutNest.API.Auth;
 
-public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
+internal class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
 {
     private readonly IJwtToken _jwtToken;
     private readonly string _mongoDbConnectionString;

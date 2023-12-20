@@ -6,7 +6,7 @@ using WorkoutNest.Infrastructure.Mongo.Entities;
 
 namespace WorkoutNest.API.Exercises;
 
-public class AddExerciseEndpoint: Endpoint<ExerciseRequest, ExerciseResponse>
+internal class AddExerciseEndpoint: Endpoint<ExerciseRequest, ExerciseResponse>
 {
     private string mongoDbConnectionString;
 

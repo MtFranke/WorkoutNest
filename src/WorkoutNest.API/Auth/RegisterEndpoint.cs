@@ -5,7 +5,7 @@ using WorkoutNest.Infrastructure.Mongo.Entities;
 
 namespace WorkoutNest.API.Auth;
 
-public class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
+internal class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
 {
     private string mongoDbConnectionString;
     public RegisterEndpoint(IConfiguration configuration)

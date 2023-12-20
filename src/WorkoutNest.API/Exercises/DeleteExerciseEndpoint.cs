@@ -5,7 +5,7 @@ using WorkoutNest.Infrastructure.Mongo.Entities;
 
 namespace WorkoutNest.API.Exercises;
 
-public class DeleteExerciseEndpoint : EndpointWithoutRequest
+internal class DeleteExerciseEndpoint : EndpointWithoutRequest
 {
     
     private string mongoDbConnectionString;
