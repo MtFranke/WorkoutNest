@@ -2,10 +2,16 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using WorkoutNest.API;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Add support to logging with SERILOG
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
 builder.Services
     .AddAuthorization()
     .AddCors()
@@ -45,7 +51,8 @@ app.UseCors(x => x
     .SetIsOriginAllowed(origin => true) // allow any origin
     //.WithOrigins("https://localhost:44351")); // Allow only this origin can also have multiple origins separated with comma
     .AllowCredentials()); // allow credentials
-
+//Add support to logging request with SERILOG
+app.UseSerilogRequestLogging();
 app
     .UseFastEndpoints()
     .UseSwaggerGen();
