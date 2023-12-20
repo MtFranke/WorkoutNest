@@ -13,6 +13,7 @@ builder.Services
     .SwaggerDocument();
 
 builder.Services.AddSingleton<IJwtToken, JwtTokenGenerator>();
+builder.Services.AddApplicationInsightsTelemetry();
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
