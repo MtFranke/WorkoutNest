@@ -40,7 +40,11 @@ internal class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
             throw new AuthenticationException("Please provide correct username nad password.");
         }
 
-        var tokenG = _jwtToken.GenerateToken(Guid.NewGuid().ToString(), new []{new Claim("user_id", user.Id)});
+        var tokenG = _jwtToken.GenerateToken(Guid.NewGuid().ToString(), new []
+        {
+            new Claim("user_id", user.Id),
+            new Claim("roles", "workout-nest.user")
+        });
         
         await SendAsync(new() {AccessToken = tokenG} , cancellation: c);
     }

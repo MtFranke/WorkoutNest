@@ -25,6 +25,7 @@ builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
         options.RequireHttpsMetadata = false;
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidIssuer =  builder.Configuration["JwtToken:Issuer"], // Update with your actual issuer
@@ -32,8 +33,14 @@ builder.Services.AddAuthentication("Bearer")
             IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtToken:SecretKey"])),
 
         };
-        
+
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("user", x => x.RequireClaim("roles"));
+
+});
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
