@@ -1,7 +1,6 @@
 using System.Security.Authentication;
 using System.Security.Claims;
 using FastEndpoints;
-using IdentityModel.Client;
 using MongoDB.Driver;
 using WorkoutNest.Infrastructure.Mongo;
 using WorkoutNest.Infrastructure.Mongo.Entities;
