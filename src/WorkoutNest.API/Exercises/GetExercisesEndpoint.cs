@@ -27,12 +27,7 @@ internal class GetExercisesEndpoint:EndpointWithoutRequest
         var exercisesCollection = db.GetCollection<Exercise>(Collections.ExercisesCollection);
         var exercises = await exercisesCollection.Find(_ => true).ToListAsync(cancellationToken: c);
 
-        await SendAsync(new ExercisesResponse() {Exercises = exercises} , cancellation: c);
+        await SendAsync(exercises , cancellation: c);
 
     }
-}
-
-public class ExercisesResponse
-{
-    public IList<Exercise> Exercises { get; set; }
 }

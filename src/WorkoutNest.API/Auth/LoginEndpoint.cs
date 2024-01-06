@@ -29,6 +29,7 @@ internal class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
     {
 
         var client = new MongoClient(_mongoDbConnectionString);
+
         var db = client.GetDatabase(_mongoDb);
         var users = db.GetCollection<User>(Collections.UsersCollection);
         

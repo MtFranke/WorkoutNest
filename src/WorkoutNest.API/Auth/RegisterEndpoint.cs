@@ -25,7 +25,6 @@ internal class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
         var client = new MongoClient(mongoDbConnectionString);
         var db = client.GetDatabase("workoutnest");
         var users = db.GetCollection<User>(Collections.UsersCollection);
-
         var userWithEmail = await (await users.FindAsync(x => x.Email == r.Email, cancellationToken: c))
             .SingleOrDefaultAsync(cancellationToken: c);
 
