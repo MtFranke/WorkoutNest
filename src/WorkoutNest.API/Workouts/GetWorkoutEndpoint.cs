@@ -7,25 +7,24 @@ namespace WorkoutNest.API.Workouts;
 
 public class GetWorkoutEndpoint: EndpointWithoutRequest
 {
+    private readonly IMongoWrapper _mongoWrapper;
+
     public override void Configure()
     {
         Get("/workout/{workoutId}");
-        AllowAnonymous();
+    
     }
     
-    private string mongoDbConnectionString;
 
-    public GetWorkoutEndpoint(IConfiguration configuration)
+    public GetWorkoutEndpoint(IMongoWrapper mongoWrapper)
     {
-        mongoDbConnectionString = configuration["MongoDbConnectionString"];
+        _mongoWrapper = mongoWrapper;
     }
     
     public override async Task HandleAsync(CancellationToken c)
     {
         var workoutId = Route<string>("workoutId");
-        var client = new MongoClient(mongoDbConnectionString);
-        var db = client.GetDatabase("workoutnest");
-        var workout = db.GetCollection<Workout>(Collections.WorkoutsCollection);
+        var workout =  _mongoWrapper.GetCollection<Workout>(Collections.WorkoutsCollection);
         var res = await workout.FindAsync(x => x.Id == workoutId, cancellationToken: c);
         var r = await res.SingleOrDefaultAsync();
         await SendAsync(r);

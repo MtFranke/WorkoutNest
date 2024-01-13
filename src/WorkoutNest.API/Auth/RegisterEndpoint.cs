@@ -7,10 +7,10 @@ namespace WorkoutNest.API.Auth;
 
 internal class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
 {
-    private string mongoDbConnectionString;
-    public RegisterEndpoint(IConfiguration configuration)
+    private readonly IMongoWrapper _mongoWrapper;
+    public RegisterEndpoint(IMongoWrapper mongoWrapper)
     {
-        mongoDbConnectionString = configuration["MongoDbConnectionString"];
+        _mongoWrapper = mongoWrapper;
     }
     
     public override void Configure()
@@ -21,10 +21,7 @@ internal class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
     
     public override async Task HandleAsync(RegisterRequest r, CancellationToken c)
     {
-        
-        var client = new MongoClient(mongoDbConnectionString);
-        var db = client.GetDatabase("workoutnest");
-        var users = db.GetCollection<User>(Collections.UsersCollection);
+        var users = _mongoWrapper.GetCollection<User>(Collections.UsersCollection);
         var userWithEmail = await (await users.FindAsync(x => x.Email == r.Email, cancellationToken: c))
             .SingleOrDefaultAsync(cancellationToken: c);
 

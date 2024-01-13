@@ -7,12 +7,13 @@ namespace WorkoutNest.API.Exercises;
 
 internal class DeleteExerciseEndpoint : EndpointWithoutRequest
 {
-    
+    private readonly IMongoWrapper _mongoWrapper;
+
     private string mongoDbConnectionString;
 
-    public DeleteExerciseEndpoint(IConfiguration configuration)
+    public DeleteExerciseEndpoint(IMongoWrapper mongoWrapper)
     {
-        mongoDbConnectionString = configuration["MongoDbConnectionString"];
+        _mongoWrapper = mongoWrapper;
     }
     
     public override void Configure()
@@ -24,10 +25,7 @@ internal class DeleteExerciseEndpoint : EndpointWithoutRequest
     public override async Task HandleAsync(CancellationToken c)
     {
         var exerciseId = Route<string>("exerciseId");
-        var client = new MongoClient(mongoDbConnectionString);
-        var db = client.GetDatabase("workoutnest");
-        var exercises = db.GetCollection<Exercise>(Collections.ExercisesCollection);
-
+        var exercises = _mongoWrapper.GetCollection<Exercise>(Collections.ExercisesCollection);
         await exercises.DeleteOneAsync(x => x.Id == exerciseId, cancellationToken: c);
     }
 

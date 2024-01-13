@@ -1,6 +1,4 @@
 using FastEndpoints;
-using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using WorkoutNest.Infrastructure.Mongo;
 using WorkoutNest.Infrastructure.Mongo.Entities;
 
@@ -8,11 +6,11 @@ namespace WorkoutNest.API.Exercises;
 
 internal class AddExerciseEndpoint: Endpoint<ExerciseRequest, ExerciseResponse>
 {
-    private string mongoDbConnectionString;
+    private readonly IMongoWrapper _mongoWrapper;
 
-    public AddExerciseEndpoint(IConfiguration configuration)
+    public AddExerciseEndpoint(IMongoWrapper mongoWrapper)
     {
-        mongoDbConnectionString = configuration["MongoDbConnectionString"];
+        _mongoWrapper = mongoWrapper;
     }
     
     public override void Configure()
@@ -23,15 +21,12 @@ internal class AddExerciseEndpoint: Endpoint<ExerciseRequest, ExerciseResponse>
 
     public override async Task HandleAsync(ExerciseRequest r, CancellationToken c)
     {
-        var client = new MongoClient(mongoDbConnectionString);
-        var db = client.GetDatabase("workoutnest");
-        var exercises = db.GetCollection<Exercise>(Collections.ExercisesCollection);
+        var exercises = _mongoWrapper.GetCollection<Exercise>(Collections.ExercisesCollection);
         var id = Guid.NewGuid().ToString();
         var exercise = new Exercise(id, r.Name, r.PrimaryMuscelGroup, r.OtherMuscelGroup,
             r.Equipment);
         await exercises.InsertOneAsync(exercise, c);
         await SendAsync(new ExerciseResponse() {Id =id} , cancellation: c);
-
     }
 
 }

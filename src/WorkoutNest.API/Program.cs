@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using WorkoutNest.API;
+using WorkoutNest.Infrastructure.Mongo;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,7 @@ builder.Services
 
 builder.Services.AddSingleton<IJwtToken, JwtTokenGenerator>();
 builder.Services.AddApplicationInsightsTelemetry();
-
+builder.Services.AddScoped<IMongoWrapper, MongoWrapper>();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {

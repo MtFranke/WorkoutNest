@@ -13,7 +13,7 @@ public class Workout
 
 public class ExerciseWorkout
 {
-    public string Id { get; set; }
+    public string ExercisesId { get; set; }
     public IList<Set> Sets { get; set; }
 }
 

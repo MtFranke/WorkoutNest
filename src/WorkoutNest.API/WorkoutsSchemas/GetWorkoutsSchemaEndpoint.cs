@@ -7,12 +7,11 @@ namespace WorkoutNest.API.WorkoutsSchemas;
 
 public class GetWorkoutsSchemaEndpoint : EndpointWithoutRequest
 {
-    private readonly string _mongoDbConnectionString;
-    private readonly string _mongoDb;
-    public GetWorkoutsSchemaEndpoint(IConfiguration configuration)
+    private readonly IMongoWrapper _mongoWrapper;
+
+    public GetWorkoutsSchemaEndpoint(IMongoWrapper mongoWrapper)
     {
-        _mongoDbConnectionString = configuration["MongoDbConnectionString"];
-        _mongoDb = configuration["MongoDb"];
+        _mongoWrapper = mongoWrapper;
     }
     
     public override void Configure()
@@ -23,9 +22,7 @@ public class GetWorkoutsSchemaEndpoint : EndpointWithoutRequest
     public override async Task HandleAsync(CancellationToken ct)
     {
         var userId  = User.Claims.Single(x => x.Type == "user_id").Value;
-        var client = new MongoClient(_mongoDbConnectionString);
-        var db = client.GetDatabase(_mongoDb);
-        var workoutsCollection = db.GetCollection<WorkoutSchema>(Collections.WorkoutsSchemaCollection);
+        var workoutsCollection = _mongoWrapper.GetCollection<WorkoutSchema>(Collections.WorkoutsSchemaCollection);
         var userWorkouts = await workoutsCollection.Find(x => x.UserID == userId).ToListAsync(cancellationToken: ct);
 
         await SendAsync(userWorkouts, cancellation: ct);

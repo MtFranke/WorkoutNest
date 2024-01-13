@@ -10,14 +10,12 @@ namespace WorkoutNest.API.Auth;
 internal class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
 {
     private readonly IJwtToken _jwtToken;
-    private readonly string _mongoDbConnectionString;
-    private readonly string _mongoDb;
+    private readonly IMongoWrapper _mongoWrapper;
 
-    public LoginEndpoint(IConfiguration configuration, IJwtToken jwtToken)
+    public LoginEndpoint( IJwtToken jwtToken, IMongoWrapper mongoWrapper)
     {
         _jwtToken = jwtToken;
-        _mongoDbConnectionString = configuration["MongoDbConnectionString"];
-        _mongoDb = configuration["MongoDb"];
+        _mongoWrapper = mongoWrapper;
     }
     public override void Configure()
     {
@@ -28,11 +26,7 @@ internal class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
     public override async Task HandleAsync(LoginRequest r, CancellationToken c)
     {
 
-        var client = new MongoClient(_mongoDbConnectionString);
-
-        var db = client.GetDatabase(_mongoDb);
-        var users = db.GetCollection<User>(Collections.UsersCollection);
-        
+        var users = _mongoWrapper.GetCollection<User>(Collections.UsersCollection);
         var user = await (await users.FindAsync(x => x.Username == r.Username && x.Password == r.Password, cancellationToken: c))
             .SingleOrDefaultAsync(cancellationToken: c);
         

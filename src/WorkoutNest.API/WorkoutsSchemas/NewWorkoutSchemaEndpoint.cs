@@ -1,6 +1,4 @@
-using System.Security.Claims;
 using FastEndpoints;
-using MongoDB.Driver;
 using WorkoutNest.Infrastructure.Mongo;
 using WorkoutNest.Infrastructure.Mongo.Entities;
 
@@ -8,12 +6,11 @@ namespace WorkoutNest.API.Workouts;
 
 public class NewWorkoutSchemaEndpoint: Endpoint<CreateWorkoutRequest>
 {
-    private readonly string _mongoDbConnectionString;
-    private readonly string _mongoDb;
-    public NewWorkoutSchemaEndpoint(IConfiguration configuration)
+    private readonly IMongoWrapper _mongoWrapper;
+    
+    public NewWorkoutSchemaEndpoint(IMongoWrapper mongoWrapper)
     {
-        _mongoDbConnectionString = configuration["MongoDbConnectionString"];
-        _mongoDb = configuration["MongoDb"];
+        _mongoWrapper = mongoWrapper;
     }
     
     public override void Configure()
@@ -25,9 +22,7 @@ public class NewWorkoutSchemaEndpoint: Endpoint<CreateWorkoutRequest>
     {
          var userId  = User.Claims.Single(x => x.Type == "user_id").Value;
          var workoutId = Guid.NewGuid().ToString();
-         var client = new MongoClient(_mongoDbConnectionString);
-         var db = client.GetDatabase(_mongoDb);
-         var workoutSchemaCollection = db.GetCollection<WorkoutSchema>(Collections.WorkoutsSchemaCollection);
+         var workoutSchemaCollection = _mongoWrapper.GetCollection<WorkoutSchema>(Collections.WorkoutsSchemaCollection);
          var workoutSchema = new WorkoutSchema()
          {
              Name = r.Name,

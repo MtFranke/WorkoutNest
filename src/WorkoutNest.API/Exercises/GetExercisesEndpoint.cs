@@ -7,11 +7,11 @@ namespace WorkoutNest.API.Exercises;
 
 internal class GetExercisesEndpoint:EndpointWithoutRequest
 {
-    private string mongoDbConnectionString;
+    private readonly IMongoWrapper _mongoWrapper;
 
-    public GetExercisesEndpoint(IConfiguration configuration)
+    public GetExercisesEndpoint(IMongoWrapper mongoWrapper)
     {
-        mongoDbConnectionString = configuration["MongoDbConnectionString"];
+        _mongoWrapper = mongoWrapper;
     }
     
     public override void Configure()
@@ -22,12 +22,8 @@ internal class GetExercisesEndpoint:EndpointWithoutRequest
 
     public override async Task HandleAsync(CancellationToken c)
     {
-        var client = new MongoClient(mongoDbConnectionString);
-        var db = client.GetDatabase("workoutnest");
-        var exercisesCollection = db.GetCollection<Exercise>(Collections.ExercisesCollection);
+        var exercisesCollection = _mongoWrapper.GetCollection<Exercise>(Collections.ExercisesCollection);
         var exercises = await exercisesCollection.Find(_ => true).ToListAsync(cancellationToken: c);
-
         await SendAsync(exercises , cancellation: c);
-
     }
 }
