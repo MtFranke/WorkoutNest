@@ -3,6 +3,7 @@ namespace WorkoutNest.Infrastructure.Mongo.Entities;
 public class Workout
 {
     public string Id { get; set; }
+    public string WorkoutSchemaId { get; set; }
     public string Name { get; set; }
     public string UserId { get; set; }
     public DateTimeOffset Date { get; set; }

@@ -5,7 +5,7 @@ using WorkoutNest.Infrastructure.Mongo.Entities;
 
 namespace WorkoutNest.API.Workouts;
 
-public class GetWorkoutEndpoint: EndpointWithoutRequest
+public class GetWorkoutByIdEndpoint: EndpointWithoutRequest
 {
     private readonly IMongoWrapper _mongoWrapper;
 
@@ -16,7 +16,7 @@ public class GetWorkoutEndpoint: EndpointWithoutRequest
     }
     
 
-    public GetWorkoutEndpoint(IMongoWrapper mongoWrapper)
+    public GetWorkoutByIdEndpoint(IMongoWrapper mongoWrapper)
     {
         _mongoWrapper = mongoWrapper;
     }

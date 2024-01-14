@@ -29,7 +29,8 @@ public class SaveWorkoutEndpoint : Endpoint<SaveWorkoutEndpoint.SaveWorkoutReque
             Id = Guid.NewGuid().ToString(),
             Exercises = r.Exercises,
             UserId = userId,
-            Date = DateTimeOffset.Now
+            Date = DateTimeOffset.Now,
+            WorkoutSchemaId = r.WorkoutSchemaId
         };
         await workout.InsertOneAsync(workoutDone, c);
 
@@ -40,6 +41,7 @@ public class SaveWorkoutEndpoint : Endpoint<SaveWorkoutEndpoint.SaveWorkoutReque
     public class SaveWorkoutRequest
     {
         public string Name { get; set; }
+        public string WorkoutSchemaId { get; set; }
         public List<ExerciseWorkout> Exercises { get; set; }
     }
     
