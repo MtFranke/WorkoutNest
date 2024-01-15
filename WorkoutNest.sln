@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutNest.Infrastructure"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{66BE9DFA-2203-437F-9DD4-2EEEFF1ADB19}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AB58C9FC-91DE-455C-9A05-E958C60AF1E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutNest.API.Tests", "tests\WorkoutNest.API.Tests\WorkoutNest.API.Tests.csproj", "{70E734AC-C4FF-49BA-B4A5-6366E4303537}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +24,14 @@ Global
 		{0FD7DC7C-7CEA-4396-81BA-2073F973D9FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FD7DC7C-7CEA-4396-81BA-2073F973D9FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FD7DC7C-7CEA-4396-81BA-2073F973D9FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70E734AC-C4FF-49BA-B4A5-6366E4303537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70E734AC-C4FF-49BA-B4A5-6366E4303537}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70E734AC-C4FF-49BA-B4A5-6366E4303537}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70E734AC-C4FF-49BA-B4A5-6366E4303537}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EDF076FC-77BA-4A90-873B-859A12910C3A} = {66BE9DFA-2203-437F-9DD4-2EEEFF1ADB19}
 		{0FD7DC7C-7CEA-4396-81BA-2073F973D9FF} = {66BE9DFA-2203-437F-9DD4-2EEEFF1ADB19}
+		{70E734AC-C4FF-49BA-B4A5-6366E4303537} = {AB58C9FC-91DE-455C-9A05-E958C60AF1E0}
 	EndGlobalSection
 EndGlobal

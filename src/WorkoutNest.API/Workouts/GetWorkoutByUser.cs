@@ -1,13 +1,11 @@
 using FastEndpoints;
-using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using WorkoutNest.Infrastructure.Mongo;
 using WorkoutNest.Infrastructure.Mongo.Entities;
 
 namespace WorkoutNest.API.Workouts;
 
-public class GetWorkoutByUser : EndpointWithoutRequest
+public class GetWorkoutByUser : EndpointWithoutRequest<Summary>
 {
     private readonly IMongoWrapper _mongoWrapper;
 
@@ -35,6 +33,8 @@ public class GetWorkoutByUser : EndpointWithoutRequest
             .OrderByDescending(workout => workout.Date).Skip(1).FirstOrDefault();
 
         List<Gain> gains = new List<Gain>();
+        double totalWorkotVolume = 0;
+        double totalPrevWorkotVolume = 0;
         foreach (var lw in lastWorkout.Exercises)
         {
            var exerciseExist = secondToLast.Exercises.Any(x => x.ExercisesId == lw.ExercisesId);
@@ -58,11 +58,20 @@ public class GetWorkoutByUser : EndpointWithoutRequest
                }
                
                gains.Add(new Gain(lw.ExercisesId, previousVolume, currentVolume));
+               totalWorkotVolume += currentVolume;
            }
         }
-        
-        
-        await SendAsync(gains);
+
+        foreach (var stl in secondToLast.Exercises)
+        {
+            foreach (var set in stl.Sets)
+            {
+                totalPrevWorkotVolume += set.Reps * set.Weight;
+            }
+        }
+
+        var summ = new Summary(totalPrevWorkotVolume, totalWorkotVolume, gains);
+        await SendAsync(summ, cancellation: c);
     }
 
 }
@@ -74,9 +83,33 @@ public class Gain
     
     public double Increase { get; set; }
     
-    public Gain(string exerciseId, double previousVolume, double currentVolume)
+    public Gain(string exerciseId, double totalPreviousVolume, double currentVolume)
     {
         ExerciseId = exerciseId;
-        Volume = previousVolume;
+        Volume = totalPreviousVolume;
+        Increase = GetPercentageGain(totalPreviousVolume, currentVolume);
+    }
+
+    public static double GetPercentageGain(double startValue, double finalValue)
+    {
+        return  Math.Round(((finalValue - startValue) / startValue) * 100, 2);
+    }
+    
+    
+}
+
+public class Summary
+{ 
+    public double TotalVolume { get; set; }
+    
+    public double Increase { get; set; }
+    
+    public IEnumerable<Gain> Volumes { get; set; }
+
+    public Summary(double totalPreviousVolume, double volume, List<Gain> gains)
+    {
+        Volumes = gains;
+        TotalVolume = totalPreviousVolume;
+        Increase = Gain.GetPercentageGain(totalPreviousVolume, volume);
     }
 }
