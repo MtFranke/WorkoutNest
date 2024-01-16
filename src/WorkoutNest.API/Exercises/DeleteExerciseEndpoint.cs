@@ -19,7 +19,6 @@ internal class DeleteExerciseEndpoint : EndpointWithoutRequest
     public override void Configure()
     {
         Delete("/exercises/{exerciseId}");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(CancellationToken c)

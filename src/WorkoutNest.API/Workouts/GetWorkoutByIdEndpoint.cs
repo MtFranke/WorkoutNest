@@ -12,7 +12,6 @@ public class GetWorkoutByIdEndpoint: EndpointWithoutRequest
     public override void Configure()
     {
         Get("/workout/{workoutId}");
-    
     }
     
 

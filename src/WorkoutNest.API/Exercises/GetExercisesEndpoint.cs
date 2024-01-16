@@ -17,7 +17,7 @@ internal class GetExercisesEndpoint:EndpointWithoutRequest
     public override void Configure()
     {
         Get("/exercises");
-        AllowAnonymous();
+      
     }
 
     public override async Task HandleAsync(CancellationToken c)

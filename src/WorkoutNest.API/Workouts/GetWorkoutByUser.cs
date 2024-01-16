@@ -12,7 +12,6 @@ public class GetWorkoutByUser : EndpointWithoutRequest<Summary>
     public override void Configure()
     {
         Get("/workout/gains");
-    
     }
     
 

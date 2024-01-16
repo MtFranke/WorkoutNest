@@ -16,7 +16,6 @@ internal class AddExerciseEndpoint: Endpoint<ExerciseRequest, ExerciseResponse>
     public override void Configure()
     {
         Post("/exercises");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(ExerciseRequest r, CancellationToken c)
