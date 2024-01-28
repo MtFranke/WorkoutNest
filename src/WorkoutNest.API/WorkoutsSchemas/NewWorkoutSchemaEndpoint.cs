@@ -28,7 +28,7 @@ public class NewWorkoutSchemaEndpoint: Endpoint<CreateWorkoutRequest>
              Name = r.Name,
              UserID = userId,
              Id = workoutId,
-             ExercisesId = r.Exercises
+             ExercisesId = r.ExercisesId
          };
          await workoutSchemaCollection.InsertOneAsync(workoutSchema, cancellationToken: c);
          await SendAsync(workoutId, cancellation: c);
@@ -39,6 +39,6 @@ public class NewWorkoutSchemaEndpoint: Endpoint<CreateWorkoutRequest>
 public class CreateWorkoutRequest
 {
     public string Name { get; set; }
-    public string[] Exercises { get; set; }
+    public string[] ExercisesId { get; set; }
     public string UserId { get; set; }
 }
