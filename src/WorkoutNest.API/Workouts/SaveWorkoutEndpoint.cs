@@ -7,7 +7,6 @@ namespace WorkoutNest.API.Workouts;
 public class SaveWorkoutEndpoint : Endpoint<SaveWorkoutEndpoint.SaveWorkoutRequest, string>
 {
     private readonly IMongoWrapper _mongoWrapper;
-    private string mongoDbConnectionString;
 
     public SaveWorkoutEndpoint(IMongoWrapper mongoWrapper)
     {
